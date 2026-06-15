@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.oo.tasklist.data.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,7 +31,11 @@ class TaskListViewModel @Inject constructor(
             initialValue = TaskListUiState.Loading,
         )
 
-    fun addTask(text: String) = repository.add(text)
+    fun addTask(text: String) {
+        viewModelScope.launch(Dispatchers.IO) { repository.add(text) }
+    }
 
-    fun toggleTask(id: String) = repository.toggle(id)
+    fun toggleTask(id: String) {
+        viewModelScope.launch(Dispatchers.IO) { repository.toggle(id) }
+    }
 }
