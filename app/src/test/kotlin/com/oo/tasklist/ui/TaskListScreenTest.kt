@@ -4,8 +4,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.oo.tasklist.data.FakeTaskRepository
+import io.github.takahirom.roborazzi.captureRoboImage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import org.junit.Test
@@ -31,7 +33,9 @@ class TaskListScreenTest {
                 TaskListScreen(viewModel = viewModel)
             }
         }
+        composeRule.waitForIdle()
         composeRule.onNodeWithText("No tasks yet", substring = true).assertIsDisplayed()
+        composeRule.onRoot().captureRoboImage("../screenshots/task_list_empty.png")
     }
 
     @Test
@@ -42,7 +46,9 @@ class TaskListScreenTest {
             }
         }
         viewModel.onAdd("buy milk")
+        composeRule.waitForIdle()
         composeRule.onNodeWithText("buy milk").assertIsDisplayed()
+        composeRule.onRoot().captureRoboImage("../screenshots/task_list_one_task.png")
     }
 
     @Test
@@ -54,7 +60,27 @@ class TaskListScreenTest {
         }
         viewModel.onAdd("task one")
         viewModel.onAdd("task two")
+        composeRule.waitForIdle()
         // Header must display the remaining count (2 undone tasks).
         composeRule.onNodeWithText("2", substring = true).assertIsDisplayed()
+        composeRule.onRoot().captureRoboImage("../screenshots/task_list_two_tasks.png")
+    }
+
+    @Test
+    fun `loaded state with mixed done and not-done tasks shows count`() {
+        composeRule.setContent {
+            MaterialTheme {
+                TaskListScreen(viewModel = viewModel)
+            }
+        }
+        viewModel.onAdd("buy milk")
+        viewModel.onAdd("buy eggs")
+        composeRule.waitForIdle()
+        // FakeTaskRepository assigns sequential IDs starting at "1"
+        viewModel.onToggle("1")
+        composeRule.waitForIdle()
+        // "buy milk" is done; "buy eggs" is pending — count shows 1 remaining
+        composeRule.onNodeWithText("1", substring = true).assertIsDisplayed()
+        composeRule.onRoot().captureRoboImage("../screenshots/task_list_mixed.png")
     }
 }

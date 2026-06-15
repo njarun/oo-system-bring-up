@@ -1,0 +1,44 @@
+name: record-screenshots
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to record screenshots on'
+        required: true
+        default: 'feat/roborazzi-screenshots'
+
+permissions:
+  contents: write
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.branch }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Create screenshots directory
+        run: mkdir -p screenshots
+      - name: Record Roborazzi screenshots
+        run: ./gradlew :app:recordRoborazziDebug --no-daemon --stacktrace
+      - name: Commit screenshots
+        run: |
+          git config user.name njarun
+          git config user.email njarunnj@gmail.com
+          git add screenshots/
+          if git diff --cached --quiet; then
+            echo "No screenshot changes to commit"
+          else
+            git commit -m "screenshots: record roborazzi JVM captures
+
+Co-Authored-By: Paperclip <noreply@paperclip.ing>"
+            git push
+          fi
