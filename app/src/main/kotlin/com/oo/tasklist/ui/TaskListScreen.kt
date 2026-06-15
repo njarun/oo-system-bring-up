@@ -33,8 +33,8 @@ fun TaskListScreen(viewModel: TaskListViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     TaskListContent(
         uiState = uiState,
-        onAddTask = viewModel::addTask,
-        onToggleTask = viewModel::toggleTask,
+        onAddTask = viewModel::onAdd,
+        onToggleTask = viewModel::onToggle,
     )
 }
 
