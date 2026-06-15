@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.oo.tasklist.data.FakeTaskRepository
-import io.github.takahirom.roborazzi.captureRoboImage
+import com.github.takahirom.roborazzi.captureRoboImage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import org.junit.Test
