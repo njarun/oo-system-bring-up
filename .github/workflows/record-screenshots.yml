@@ -37,8 +37,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No screenshot changes to commit"
           else
-            git commit -m "screenshots: record roborazzi JVM captures
-
-Co-Authored-By: Paperclip <noreply@paperclip.ing>"
+            git commit -m $'screenshots: record roborazzi JVM captures\n\nCo-Authored-By: Paperclip <noreply@paperclip.ing>'
             git push
           fi
