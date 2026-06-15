@@ -7,7 +7,7 @@ class CountsTest {
 
     @Test
     fun `empty list returns 0`() {
-        assertEquals(0, Counts.remainingCount(emptyList()))
+        assertEquals(0, remainingCount(emptyList()))
     }
 
     @Test
@@ -16,7 +16,7 @@ class CountsTest {
             Task("1", "wash dishes", done = true),
             Task("2", "clean room", done = true),
         )
-        assertEquals(0, Counts.remainingCount(tasks))
+        assertEquals(0, remainingCount(tasks))
     }
 
     @Test
@@ -26,6 +26,6 @@ class CountsTest {
             Task("2", "read book", done = true),
             Task("3", "call mom", done = false),
         )
-        assertEquals(2, Counts.remainingCount(tasks))
+        assertEquals(2, remainingCount(tasks))
     }
 }
