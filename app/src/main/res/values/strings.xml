@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">OO Task List</string>
+    <string name="empty_state">No tasks yet — add one below!</string>
+    <string name="add_task_hint">New task…</string>
+    <string name="add_task_button">Add</string>
 </resources>
